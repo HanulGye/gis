@@ -1,0 +1,95 @@
+package sankaiMondai;
+
+import java.util.Calendar;
+
+public class Calendar_2 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		int ioYear, ioMonth;
+		calendar.set(Calendar.DATE, 1);
+		int day = calendar.get(Calendar.DATE);
+
+		//１．引数の入力有無
+
+		//２－１．入力される場合
+		//エラーを防ぐための検査
+
+		String onlyNumbers = "^[0-9]*$";
+		int monthVali = Integer.parseInt(args[0].substring(4));
+
+
+		if(!args[0].matches(onlyNumbers)){
+			System.out.println("入力の値は数字のみです");
+		}else if(args[0].length()!=6){
+			System.out.println("６桁の数字を入力してください");
+		}else if(args[0].charAt(0)=='-'){
+			System.out.println("マイナスは入力できません");
+		}else if(monthVali>=13){
+			System.out.println("月は01から12まで入力してください");
+		}else if(args.length>1){
+			System.out.println("入力可能文字列は一つです");
+		}else{
+			ioYear = Integer.parseInt(args[0].substring(0, 4));
+			ioMonth = Integer.parseInt(args[0].substring(4));
+
+			System.out.println(ioYear+"年 "+ioMonth+"月です");
+
+			calendar.set(Calendar.YEAR, ioYear);
+			calendar.set(Calendar.MONTH, ioMonth-1);
+			System.out.println(" 日 月 火 水 木 金 土 ");
+			for (int i = 0; i < calendar.get(Calendar.DAY_OF_WEEK); i++) {
+				System.out.print(" 最初");
+			}
+			for(int j=1; j<calendar.getActualMaximum(calendar.DATE)+1; j++){
+				System.out.print(calendar.get(Calendar.DATE));
+				if(calendar.get(Calendar.DATE)<10){
+					System.out.print("  ");
+				}else{
+					System.out.print(" ");
+				}
+				calendar.set(Calendar.DATE, j+1);
+				if(calendar.get(Calendar.DAY_OF_WEEK)==1){
+					System.out.print("\r ");
+
+				}
+			}
+		}
+
+
+
+
+
+		//２－２．入力されない場合
+		/*ioYear = calendar.get(Calendar.YEAR);
+		ioMonth = calendar.get(Calendar.MONTH)+1;
+
+		System.out.println(ioYear+"年 "+ioMonth+"月です");
+
+		System.out.println(" 日 月 火 水 木 金 土 ");
+		for (int i = 0; i < calendar.get(Calendar.DAY_OF_WEEK)+1; i++) {
+			System.out.print("  ");
+
+		}
+		for(int j=1; j<calendar.getActualMaximum(calendar.DATE)+1; j++){
+			System.out.print(calendar.get(Calendar.DATE));
+			if(calendar.get(Calendar.DATE)<10){
+				System.out.print("  ");
+			}else{
+				System.out.print(" ");
+			}
+			calendar.set(Calendar.DATE, j+1);
+			if(calendar.get(Calendar.DAY_OF_WEEK)==1){
+				System.out.print("\r ");
+
+			}
+		}
+*/
+
+	}
+}
+
+
