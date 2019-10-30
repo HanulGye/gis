@@ -1,0 +1,22 @@
+내장객체
+
+	page
+
+
+	request
+
+
+
+	session
+
+	- cookie와 같이 이해해야할 개념
+	- server-server냐 client-server냐에 따라 다를 뿐 하는 일은 비슷.
+
+	application
+
+
+
+
+	내장객체의 생명주기
+
+	page < request < session < application

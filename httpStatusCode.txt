@@ -1,0 +1,10 @@
+
+400번대 client error
+
+404 - notFound : 클라이언트의 주소오타, 혹은 실제 페이지 구현 x
+
+
+500번대 server error
+
+200번대 success 
+

@@ -1,0 +1,576 @@
+****오라클 실행 안될 때****
+
+stop dataBase : 오라클 서비스 중지
+start dataBase : 오라클 서비스 실행
+
+stop 한번 하고 start 실행
+
+==========================================================================================
+DTO 정의 
+DTO(Data Transfer Object) 는 계층간 데이터 교환을 위한 자바빈즈를 의미합니다. 
+
+여기서 말하는 계층간의 의미는 Controller, View, Business Layer, Persistent Layer 등을 말하며
+각 계층간 데이터 교환을 위한 객체를 의미합니다. 
+
+DTO는 로직을 가지지 않는 순수한 데이터 객체이고 getter, setter 메소드만 가진 클래스를 의미합니다. 
+
+
+
+DAO 정의 
+Data Access Object 의 약자로 데이터베이스의 data에 접근하기 위한 객체입니다. 
+DataBase 접근을 하기 위한 로직과 비지니스 로직을 분리하기 위해 사용합니다. 
+
+DAO의 경우는 DB와 연결할 Connection 까지 설정되어 있는 경우가 많습니다. 
+그래서 현재 많이 쓰이는 Mybatis 등을 사용할 경우 커넥션풀까지 제공되고 있기 때문에
+DAO를 별도로 만드는 경우는 드뭅니다.
+
+
+
+
+==========================================================================================
+
+cmd 화면 깨질 때
+show pagesize;
+show linesize;
+set pagesize 2000
+set linesize 2000
+
+==========================================================================================
+
+0. 사전준비
+  1) 오라클 설치 - 관리자비번 oracle 로 통일
+  2) 방화벽 - 1521 해제(이름 oracle)
+  3) @C:\oraclexe\app\oracle\product\11.2.0\server\rdbms\admin\scott.sql;
+  4) sys로그인
+  5) alter user scott identified by tiger account unlock;(scott의 비밀번호를 tiger 로 설정)
+  6) grant connect, resource to scott;	(권한 수정)
+  7) commit;	(저장)
+
+  ---Scott Table---
+  DEPT		: 부서정보
+  EMP		: 사원정보
+  SALGRADE	: 급여등급
+  DEPTNO	: 부서넘버
+
+
+  RDBMS(Relation Database Management System, 관계형 데이터베이스)
+    - 테이블간의 관계가 존재
+
+
+
+
+1. 데이터베이스 접속 방법
+
+
+
+  1) SQLPLUS
+	a. console
+	   - 관리자 : sqlplus 관리자ID/관리자PW/ as sysdba
+
+	   - 유  저 : sqlplus 유저ID/유저PW
+
+	b. sqlplus
+	   - 관리자 : conn 관리자ID/관리자PW as sysdba;
+
+	   - 유  저 : conn 유저ID/유저PW;
+
+
+  2) Developer
+    -- = 주석
+
+  3) Web - port : 8080
+
+2. SQL
+  1) 명령어는 대소문자를 구별하지 않음
+  2) 여러줄에 걸쳐서 작성이 가능하고 마지막에는 ;로 끝내야 함
+  3) 예약어(이미 만들어진 명령어)는 대문자 사용을 권장
+  4) 데이터는 대소문자를 구별한다
+  5) 연산자와 함수를 제공
+
+
+
+******SQL 명령어******
+
+* DQL(Data Query Language, 질의어)
+
+     -select (데이터 조회, 검색)
+
+* DML(Data Mainpulation Language, 데이터 조작어)
+
+     - insert	(데이터 입력)
+
+     - update	(데이터 수정)
+
+     - delete	(데이터 삭제)
+
+* DDL(Data Define Language, 데이터 정의어)	//SYS가 사용
+
+     - create	(객체 생성)
+
+     - alter	(객체 수정)
+
+     - drop	(객체 삭제)
+
+     - rename	(객체 이름 변경)
+
+     - truncate	(객체 저장공간 삭제)
+
+* TCL(Transaction Control Language, 트랜잭션 처리어)
+
+     - commit	  (트랜잭션 저장)
+
+     - rollback	  (트랜잭션 취소)
+
+     - savepoint  (임시저장)
+ 
+* DCL(Data Control Language, 데이터 제어어)	//SYS가 사용
+
+
+     - grant	(권한 부여)
+
+     - revoke	(권한 취소)
+
+===========================================================================
+오라클의 자료형
+
+  1) NUMBER(전체자리수, 소숫점자리수) : 기본 정수형, 최대 7자리
+	NUMBER(3,1)	: 99.9
+	NUMBER(3)  	: 999
+
+  2) VARCHAR(바이트수)	: 고정길이 문자열, 최대 2000byte
+	VARCHAR(4)	: abcd, a, 가나다라(안들어 갈 수 있다.한글은 2byte)
+
+  3) VARCHAR2(바이트수)	: 가변길이 문자열. 최대 4000byte
+	VARCHAR2(4)	: abcd, a(한 칸만 만들어진다)
+
+  4) DATE		: 날짜. 년월일시분초 일 을 다룬다
+			  한글용 기본포맷 = yy/mm/dd
+			  영문용 기본포맷 = DD/MON/YY
+
+  5) TIMESTAMP		: 날짜. 년월일시분초+밀리세컨즈
+
+
+=============================================================================
+SELECT문
+
+  - SELECT 결과는 RESULT SET에 보관.
+  - RESULT SET에 있는 결과를 보여주는 화면을 VIEW라 함
+
+  SELECT [DISTINCT]{*, 컬럼명, 계산식, 함수}	(아래 순서를 지켜 사용해야 함)
+  FROM 테이블명
+  [WHERE 조건문]
+  [GROUP BY 그룹으로 묶을 컬럼명]
+  [HAVING 그룹의 조건문]
+  [ORDER BY 컬럼명{DESC, ASC}]
+
+   ** 실행 순서
+      FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY
+
+
+
+   1. SELECT * FROM TAB;	//유저의 모든 테이블 명 검색
+   2. DESC 테이블명;		//테이블 구조 보기
+
+   -- 테이블의 모든 데이터를 조회
+      SELECT * FROM DEPT;
+
+
+   -- 원하는 데이터를 조회
+      SELECT 컬럼명, 컬럼명2, 컬럼명 FROM 테이블명;
+
+   -- 계산식
+      SELECT ENAME, SAL*12 FROM EMP;
+
+   -- 함수 NVL(컬럼명, 값) : 해당 컬럼에 NULL이 있으면 해당 값으로 대체
+      SELECT ENAME, SAL, COMM, SAL+NVL(COMM, 0) FROM EMP;
+      
+   -- ALIAS(별칭)
+      별칭 : 글자 사이에 공백이나 기호문자가 포함될때는 쌍따옴표로 묶는다
+      1) 컬럼명 AS 별칭
+      2) 컬럼명 별칭
+      3) 연결 연산자 ||
+	-> 두 값을 연결(eg. 'a'||'b' = 'ab')해주는 연산자로, CONCAT('a','b') 함수와 동일한 기능
+	타입이 다른 값들끼리도 연결해주며, 데이터 손실이 발생하지 않는 타입으로 합쳐준다.
+	('a'||sysdate 이런 것도 가능하단 얘기)
+      
+
+
+   -- DISTINCT
+      1) 중복제거
+      2) 컬럼명 앞에 사용
+      3) SELECT 절에서 한번만 사용 가능
+
+
+   -- WHERE 절
+      1) 비교 연산자
+	>, <, >=, <=, =, (!=, <>, ^=)
+
+      2) 논리 연산자
+	AND, OR, NOT
+
+      3) Between
+	where 컬럼명 between 값1, and 값2;
+	ex) where sal>=1500 and sal<=2500;
+	ex) where sal between 1500 and 2500;
+
+      4) IN
+	where 컬럼명 IN (값1,값2,값3);
+	ex) where deptno=10 or deptno=30;
+	ex) where deptno IN (10,30);
+
+      4_1) IS NULL : 데이터가 널인 것
+	where 컬럼명 IS NULL	
+	where 컬럼명 IS NOT NULL(부정)
+
+      **) 문자열데이터와, 날짜형데이터는 앞뒤로 '' 붙여야한다.
+
+
+      5) LIKE
+	WHERE 컬럼명 LIKE '%A';
+
+	_ : 어떤글자가 와도 상관없지만 갯수는 한 개
+	% : 어떤글자, 갯수도 상관없음
+	ex) _A : A로 끝나는 글자의 앞이 어떤 글자도 찾아주지만 글자 수는 한개
+	    %A : A로 끝나는 글자의 앞이 어떤 글자든 갯수 상관없이 찾아준다
+	    _A, %A, A%, %A_, _A
+
+
+	ESCAPE 옵션
+	와일드 카드랑 문자랑 구별하기 위한 문자를 제시하는 옵션
+	ex) where 컬럼명 like '%#%%' escape '#'
+
+   -- ORDER BY
+      DESC : 내림차순 정렬
+      ASC  : 오름차순 정렬
+      ORDER BY 컬럼명 (DESC 또는 ASC)
+
+   -- GROUP BY
+      GROUP BY 컬럼명
+
+
+   -- HAVING
+      HAVING 조건문
+
+
+========================================= DML ======================================
+1. Insert : 데이터 새로 저장
+
+   1) INSERT INTO 테이블명(컬럼명1,컬럼명2...)
+      VALUES(값1,값2....);	//컬럼명과 값은 순서가 일치해야 한다
+
+
+
+   2) INSERT INTO 테이블명	//테이블의 컬럼명 순서대로 입력해야 한다
+      VALUES(값1, 값2........);
+
+
+2. UPDATE : 데이터 수정
+
+   UPDATE 테이블명 SET 수정할 컬럼명=값, 수정할 컬럼명2=값2...
+   -where 조건문	;//조건문에 맞는 값만 수정해라
+
+
+3. DELETE : 데이터 삭제
+   -DELETE 테이블명 WHERE 조건문;
+====================================== 내장함수 ====================================
+*함수 종류
+
+ 단일행 함수
+ -컬럼에 값이 20개면 결과도 20개
+  숫자 함수, 문자 처리 함수, 날짜 처리 함수, 형변환 함수
+
+ 그룹 함수
+ -컬럼에 값이 20개 라도 결과는 1개
+  sum(), avg(), max(), min(), count()
+
+  
+ 1. 그룹 함수
+
+   1) SUM(컬럼명) : 컬럼의 합계
+      ex) select sum(sal) from emp;
+      ex) select sum(distinct deptno) from emp;
+
+
+   2) AVG(컬럼명) : 컬럼의 평균
+      ex) select avg(sal) from emp;
+      ex) select avg(distinct deptno) from emp;
+      ex) select avg(NVL(컬럼명,0))from emp;
+
+
+   3) MAX(컬럼명) : 컬럼의 최댓값
+      ex) select max(sal) from emp;
+
+
+   4) MIN(컬럼명) : 컬럼의 최솟값;
+      ex) select min(sal) from emp;
+
+
+   5) COUNT(컬럼명) : row의 갯수
+      ex) select count(ename) from emp;
+
+===================================== SUBQERTY =====================================
+- 쿼리문 안의 쿼리문
+- 메인 쿼리문 안에 사용할 값을 조회 할 목적으로 사용
+- SUBQUERY는 앞뒤로 ()로 감싸기
+- 서브쿼리 사용 가능 위치
+  SELECT절, FROM절, WHERE절, GROUP BY절, INSERT문, UPDATE문, DELETE문,
+  CREATE TABLE, CREATE VIEW문
+
+
+
+ 1) 단일행 서브쿼리 : 서브쿼리의 결과로 한 개의 값이 나온 경우
+ - 비교연산자 사용 가능 : =, <=, >=, !=
+ 
+ 2) 다중행 서브쿼리 : 서브쿼리의 결과로 여러개의 값이 나온 경우    218p
+ - IN, NOT IN, ANY
+   a) IN
+   b) NOT IN
+
+   c) ANY - 값 > any(값1,값2,값3...) - 값1보다 크거나, 값2보다 크거나 값3보다 큰 것들..
+      ex) sal > any(100,200,300) - 최소값보다 큰 것들
+
+      ANY - 값 < any(값1,값2,값3...) - 값1보다 작거나 값2보다 작거나 값3보다 작은것들..
+      ex) sal< any (100,200,300) - 최대값 보다 작은 것들
+          값 = any(값1,값2,값3) - IN
+    
+   d) ALL - 값 > all(값1,값2,값3...) - 값1보다 크고, 값2보다 크고, 값3보다 큰 것들
+      ex) sal > all(100,200,300,) - 최대값 보다 큰 것들
+
+      ALL - 값 < all(값1,값2,값3...) - 값1보다 작고, 값2보다 작고, 값3보다 작은것들
+      ex) sal < all(100,200,300) - 최소값 보다 작은 것들
+
+ 3) 다중열 서브쿼리
+    ex) 사원의 사번, 급여, 부서번호 조회, 부서번호가 30번 이면서
+        comm이 not null 인 사원들과 같은 급여와 부서인 사람들의 부서정보
+select empno, sal, deptno from emp
+where (sal, deptno) in (select sal, deptno from emp 
+where deptno=30 and comm is not null)
+
+
+  ex)FORD  사원의 부서명
+
+  ex)SMITH 사원의 상사의 부서명
+
+  ex)CHICAGO에 근무하는 사원들의 평균급여
+	select avg(sal) from emp
+	where deptno=(
+	select deptno from dept
+	where loc='CHICAGO');
+
+
+	
+
+==================================== User 생성 =====================================
+1. SYS로 로그인
+
+2. 저장용량, 저장파일 할당받기
+
+   -create tablespace 테이블스페이스명
+    datafile 경로명
+    size 용량
+
+3. 유저생성
+
+   -create user 유저명 indtified by 패스워드
+    default tablespace 테이블스페이스명
+
+4. 유저권한 적용
+
+   -grant 권한1, 권한2 to 유저명
+
+5. commit;
+
+
+   ex) create tablespace user01
+       datafile 'c:\oraclexe\oradata\user01.dbf'
+       size 10M;
+       
+       create user user01 identified by user01
+       default tablespace user01;
+
+       grant connect, resource to user01;
+
+       (치다 에러나면 rollback;)
+       commit;
+
+
+
+===================================== 테이블 생성 ==================================
+1. 유저로그인
+
+2. table 생성
+   -create table 테이블명(
+    컬럼명 데이터타입 옵션,
+    컬럼명 데이터타입 옵션
+    );
+
+3. 옵션
+
+   1) NULL		: NULL값을 허용, DEFAULT
+
+   2) NOT NULL		: NULL값을 허용하지 않음.중복 허용
+
+   3) UNIQUE		: 중복을 허용하지 않음. NULL 가능.
+
+   4) PRIMARY KEY	: NOT NULL + UNIQUE
+
+   5) DEFAULT 값	: 기본값을 적용
+
+   6) CHECK 조건문	: 조건문에 허용하는 값만 입력
+
+   7) Foreign key	: 다른 테이블을 참조하는 키
+
+   *DESC USER_CONSTRAINTS;
+    사용자가 설정 한 제약조건들을 데이터 딕셔너리에서 볼 수 있다
+
+   *select constraint_name, constraint_type, table_name from user_constraints;
+    데이터 딕셔너리에서 원하는 정보만 추출해서 볼 수 있다
+
+   *CONSTRAINT_TYPE
+    P : primaty key
+    R : reference key(foreign key)
+    U : unique
+    C : check, not null
+
+   *테이블 생성 시 제약조건
+
+    --제약조건 이름
+    ex)테이블명_컬럼명_제약조건
+
+    --NOT NULL은 컬럼레벨에서만 적용 가능
+
+    --foreign key
+      - 컬럼레벨
+	컬럼명 자료형 REFERENCES 참조할 테이블명 (해당 컬럼명)
+	컬럼명 자료형 CONSTRAINT 제약조건이름 REFERENCES 참조할 테이블명 (컬럼명)
+
+      - 테이블레벨
+	CONSTRAINT 제약조건이름 FOREIGN KEY (컬럼명) REFERENCES 참조할 테이블명(컬럼명)
+
+      - 부모테이블의 ROW가 삭제시
+	1) 자식테이블의 삭제
+	CONSTRAINT 제약조건이름 FOREIGN KEY (컬럼명) REFERENCES 참조할 테이블명(컬럼명)
+	ON DELETE CASCADE
+
+	2) 자식테이블에 NULL값 입력
+	ON DELETE SET NULL
+
+   1) 컬럼레벨
+
+	CONSTRAINT 저장 할 이름 제약조건
+
+	create table test(
+		//num number(3) primary key,	//컬럼레벨
+		//num number(3) CONSTRAINT TEST_NUM_PK PRIMARY KEY	//컬럼레벨
+		name varchar2(400) CONSTRAINT TEST_NAME_UK UNIQUE,
+		kor number(3) check(kor between 0 and 100),
+		eng number(3) default 0 check(eng between 0 and 100),
+		math number(3) default 0 check(eng between 0 and 100)....
+		--FOREIGN KEY
+		FID varchar2(10) REFERENCES TEST2,
+
+	);
+
+   2) 테이블레벨
+
+      CONSTRAINT 저장 할 이름 제약조건(적용 할 컬럼명)
+
+      create table test(
+      		num number(3),
+      		name varchar2(100),
+      		FID varchar2(10),
+
+      		CONSTRAINT TEST_NUM_PK PRIMARY KEY (NUM),
+      		CONSTRAINT TEST_NAME_UK UNIQUE (NAME)
+		--FOREIGN KEY
+		CONSTRAINT TEST_FID_FK FOREIGN KEY (FID) REFERENCES TEST2(FID)
+      );
+
+
+
+ * 테이블 삭제
+ 1) DROP table 테이블명
+   - 테이블 구조와 데이터를 모두 삭제
+ 2) TRUNCATE table 테이블명
+   - 테이블은 유지하고 데이터를 모두 삭제(복구 불가능)
+
+
+ * 테이블을 DROP하면 테이블명 앞에 BIN$...문자가 붙어서 테이블로 남음(쓰레기테이블)
+
+   - 휴지통에 있는 전체 테이블 조회
+     SELECT * FROM USER_RECYCLEBIN	
+
+
+   - 휴지통이 안 보일 때 조회 하는 법
+     ALTER SYSTEM SET "recyclebin" = ON	
+
+   - 휴지통의 모든 테이블을 삭제
+     PURGE RECYCLEBIN			
+
+   - 테이블 삭제 시 휴지통으로 가지 않고 바로 삭제
+     DROP TABLE 테이블명 PURGE
+
+
+
+
+
+
+============================================ JOIN ============================================
+
+-- oracle join (oracle에서의 join 문법)
+select n.*, f.fnum, f.fname, f.oname from notice n, files f where n.num = f.num and n.num =21 AND f.kind='notice';
+
+-- ansi join(sql 공통 join 문법)
+select n.*, f.fnum, f.fname, f.oname 
+from notice n
+inner join files f
+on (n.num = f.num and f.kind='n' and n.num = 22);
+
+위와 같이 on을 통해 조건문을 형성 
+또한, join의 종류와 어떤 테이블과 join하는지를 위에서 명시 (inner join files f)
+
+
+** left, right, full join의 차이
+
+=========================================== concat() ===========================================
+
+연결연산자 ||와 같은 기능
+앞선 필기 참고 (별칭 부분)
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

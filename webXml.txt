@@ -1,0 +1,79 @@
+
+
+--------Filter-----------
+
+
+글 삭제, 수정  -> 글쓴 사람 본인만 보이게
+
+myPage, 수정, 회원탈퇴 -> 로그인한 사람만 
+
+
+filter는 url pattern에 따른 제어이기 때문에
+URL패턴이 다르면, 같은코드가 중복되는 비효율성이 있다.
+
+이에대한 대책으로 
+
+1) parameter 설정 (임의의 파라미터 넘기고, 해당 파라미터에 따른 filter설정)
+
+2) URL parsing -> eg. http://localhost/jsp_3_1031/qna/qnaList.do
+		  eg. http://localhost/jsp_3_1031/notice/noticeWrite.do
+		 만일 위와 같이 제어하고자 하는 url들이 서로 다르다면
+		
+			http://localhost/jsp_3_1031/notice/?/noticeWrite.do
+
+		 ?의 자리에 임의의 값을 넣고 그것에 따라 filter거치거나 안거치거나 하게 할 수 있다.
+
+3) filter 클래스 자체에서 제어 -> LoginCheck.java 코드 참고(map 이용)
+
+
+--------Listener-----------
+
+
+filter와 달리 서버단에서(서블릿) 속성(attribute) 생성이나 세션(session) 생성에 따른
+제어 기능 
+
+client의 request와 관련된게 아니기 때문에, web.xml에 mapping 안해줘도 됨.
+
+
+--------context-param----------
+
+
+web.xml에서 설정하는 parameter 
+
+context는 맥락 즉, '애플리케이션 전체'에 해당되는 단위이다.
+
+name과 value가 있음.(기존 parameter와 같이)
+
+꺼내올 때는 
+
+request.getServletContext().getInitParameter("parameter name");
+
+return은 String
+
+--------init-param----------
+
+
+web.xml에서 설정하는 parameter 
+
+context-param과 달리, 한 servlet 혹은 filter내에서만 사용할 때, 사용
+
+<servlet></servlet>안에 삽입  
+
+꺼내올 때는 
+
+this.getServletConfig().getInitParameter("parameter name");
+
+혹은
+
+init method override해서 거기다가 
+
+config.getInitParameter("parameter name");
+
+return String
+
+
+--------init-param----------
+
+
+
+ 	

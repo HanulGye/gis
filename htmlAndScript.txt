@@ -1,0 +1,638 @@
+﻿HTML : 구조
+CSS  : 디자인
+  1. external
+  2. internal
+  3. inline
+
+JS   : 
+  1. external
+  2. internal
+  3. inline
+
+======================Javascript==========================
+-- 컴파일 하지 않음
+
+
+1. 출력
+  -- java - System.out.println();
+  -- js
+  1) window.alert()
+
+2. 변수 
+  -- 변수 선언 : 데이터타입 변수명;
+  -- java
+     1) primitive type : char, int, long, short, byte, double, float, boolean
+     2) reference type : String...
+
+  -- js
+      1) var          
+
+3. 연산자
+  1) 산술연산자 : +, - *, /, %
+  2) 증감연산자 : ++, --
+  3) 비교연산자 : ==, !=, ===, !==, >, <, >=, <=
+  4) 논리연산자 : &&, ||, !
+  5) 타입연산자 : typeof, instanceof
+
+4. 제어문
+  1) if, if ~ else, if ~ else if ~ else, switch ~ case, 
+  2) for, while
+  3) break, continue
+
+
+5. BOM(Browser Object Model)
+  --window는 생략 가능
+  Window
+    1) Document : HTML 문서
+    2) History  : 뒤로, 앞으로...  
+    3) Location : 주소창, 주소로 이동
+    4) Navigator: Web Browser 정보
+    5) Screen   : 현재 접속한 사용자의 화면
+
+6. DOM (Document Object Model)
+  -- 웹브라우저는 웹문서로 로드한 후 파싱하여 DOM 을 생성
+  1) 문서 노드 (Document Node)
+     트리의 최상위에 존재, Dom tree에 접근하기 위한 시작점
+  2) 요소 노드 (Element Node)
+     HTML의 요소.
+  3) 속성 노드 (Attribute Node)
+     태그의 속성
+  4) 텍스트 노드 (Text Node)
+     HTML내의 텍스트
+
+  -- Element 선택
+    1) 하나의 요소 선택(ID)
+     document.getElementById("ID명");
+
+    2) 여러가지 요소 선택(class, tag)
+    -- 반환 값은 배열
+     a) document.getElementsByClassName("클래스명"); 
+     b) document.getElementsByTagName("태그명");
+
+7. Function
+  -- java method
+    public static void main ( String []args) {}
+    접근지정자 그외지정자 리턴타입 메서드명 (매개변수들 선언) {}
+
+  -- js
+    function 함수명 (매개변수 선언들) {}
+    function (매개변수 선언들) {} - 익명함수
+
+8. Event 
+  -- 사건을 의미. 웹에서는 클릭하거나, 입력하건, 페이지가 로드되었을때 와 같은 것들.
+
+  1) 마우스 이벤트
+    a) click : 마우스를 좌클릭 했을 때
+    b) dblclick : 더블클릭
+    c) mouseenter: 요소안으로 포인터가 들어왔을때
+    d) mouseleave: 요소밖으로 포인터가 나갔을 때
+    
+  2) 키보드 이벤트 
+    a) keyup : 키를 누르고 뗏을 때
+    b) keydown : 키를 누르고 있을 때 ctrl, alt 특수키 포함
+    c) keypress : 키를 누르고 있을 때 ctrl, alt 특수키 미포함
+
+  3) 포커스 이벤트
+    a) focus    : 요소가 포커스를 얻었을 때
+    b) blur     : 요소가 포커스를 잃었을 때
+      
+  4) from 이벤트
+    a) change    : 내용이 변경 되었을 때, select, checkbox, radio 등의 상태가 변경
+    b) submit    : form 을 submit 
+    c) reset     : form 내의 내용을 초기화
+    
+  5) UI 이벤트 
+    a) load     : 웹페이지의 로드가 완료 되었을 때
+    b) unload   : 웹페이지를 종료 할 때 
+    c) resize   : 브라우저의 창의 크기를 조절 했을 때
+    d) scroll   : 스크롤 할 때
+
+9. event 적용
+  a) 요소내에 직접 적용
+    <input type="button" on 이벤트명= "함수명()">
+    
+  b) 전통적 DOM Event Handler
+    <script>
+        var d1 = document.getElementById("d1");
+        d1.on이벤트명 = 익명함수
+    </script>
+    
+  c) Dom level2
+    <script>
+        var d1 = document.getElementById("d1");
+        d1.addEventListener('이벤트명', 익명함수);
+    </script>
+
+10. BOM
+  1) location
+    a) reload() : 현재 페이지를 리로드 
+    b) href="주소" : 주소로 이동
+
+  2) history
+    a) back ()
+    b) forwoard ()
+    c) go()
+
+  3) window
+  -- method
+    1) close();    : 현재 창 닫기
+    
+    2) open ();    : 새창
+
+    3) setInterval (익명함수, 시간)  : 일정한 시간 간격으로 익명함수를 실행
+       clearInterval         : 인터벌 해제
+    4) setTimeout (익명함수, 시간)   : 정해진 시간에 딱 한번 익명함수를 실행 
+       clearTimeout          : 타임아웃 해제
+
+  -- 변수
+    opener : 
+
+  -- HTML(TEXT) 변경 : 선택자.innerHTML (innerTEXT)
+  -- Attribute 변경 : 선택자.속성명
+  -- css 변경        : 선택자.style.속성명
+
+11. Array
+  1) 빈 배열 생성
+    var ar = [];
+  2) 요소 추가
+    push(); : 배열 끝에 요소 추가
+    pop()    : 배열 끝 요소 삭제
+    unshift(): 배열 처음에 요소 추가
+    shift()  : 배열 첫 요소 삭제
+
+  3)forEach
+
+12. 문자열의 숫자를 number 형으로 전환
+  "1"+1 -> 11
+  -- java
+    Integer.parseInt("1")
+  -- js
+    1) "1"*1
+    2) parseInt("1")
+
+
+innerHTML : 선택요소 내부의 HTML 과 Text
+선택자.속성명 : 선택요소의 속성값
+
+
+13. 정규표현식 (Regular Expression)
+
+	문자열 내에서 특정 내용을 찾거나 대체 또는 발췌하는데 사용.
+	eg. e-mail , 
+
+	1) 문법 (변수에 담을 때 쌍따옴표 넣지 않음 /로 시작)
+	
+	시작 	패턴	종료	플래그
+	 /  	regexr	 /	   i
+
+	2) 플래그(flag)
+	
+	i	: 대소문자 구별 않고 검색
+	
+	g	: 문자열 내에서 모든 패턴 검색
+		(검색조건에 부합한 걸 찾은 이후에도 계속해서 검색)
+
+	m	: 문자열의 행이 바뀌어도 검색을 지속
+
+
+	3) 정규식
+	
+	^		: 시작
+	$		: 끝
+	.		: 문자 관련
+	\d or [0-9]	: 숫자 관련
+	\D		: !\d -> 숫자가 아닌 것.
+  	\w 		: 한 개의 문자나 숫자
+	\W		: !\w 문자도 아니고 숫자도 아닌 것
+	\s		: 공백문자
+	[]		: 범위를 표시 eg. [a-z] 
+				      eg2. [A-Z|a-z] |는 or의 의미
+
+	
+	4) 수량
+	*		: 0회 이상 반복
+	+		: 1회 이상 반복
+	?		: 0 또는 1회 반복
+	{m}		: m회 이상 반복할 경우 사용
+	{n,m}		: n~m회 반복되는 경우
+	(ab)		: 그룹화
+	
+========================================================================
+
+				JQuery
+
+
+1. 문법(syntax)
+	
+	$("선택자").함수();
+
+	선택자 감싸는건 홑따옴표도 가능.
+
+2. 선택자(selector)
+	
+	css 선택자와 같은 형식 
+	
+	1) id - 
+		eg. <div id="d1"></div>
+		$("#d1").function();
+
+	2) class -
+		eg. <div class="d1"></div>
+		$(".d1").function();
+
+	** $('#d1' > '.d2').function() 이런 자손 선택자도 css랑 동일.
+		
+
+** toggle : 일종의 스위치같은 개념 (버튼 하나로 어떤 기능을 수행하고 다시 그 버튼으로 원래의 상태로 돌아가는 기능)
+
+3. 이벤트
+
+	$('선택자').이벤트명(함수 호출);
+	
+	$('선택자').on('이벤트명',함수 호출);
+
+	$('선택자').on({이벤트명:함수호출, 이벤트명: 함수호출});
+
+
+4. GET
+	$('선택자').text()	: 선택요소의 텍스트 노드를 반환
+	$('선택자').html()	: 선택요소의 html 노드를 반환
+	$('선택자').val()	: 선택요소의 value 를 반환
+	$('선택자').attr("속성명") : 선택요소의 해당속성명 가져오는 것.(HTML)
+				     id, class등 상태가 변해도 변하지 않는 속성
+
+	$('선택자').prop("속성명") : 선택요소의 해당속성명 가져오는 것.(JAVASCRIPT)
+				     상태에 따라 같이 바뀌는 속성을 다룰 때(자바스크립트는 동적제어잖니)
+
+5. SET
+	$('선택자').text()	
+	$('선택자').html()	
+	$('선택자').val()	 
+	$('선택자').attr("속성명") 
+	$('선택자').prop("속성명") 
+
+	-> set은 해당 요소 가져와서 거기다가 무언가를 추가하는 것이므로, 매개변수에 해당하는()부분에 추가내용 입력!
+	eg. $('선택자')html("<h1>hi</h1>");
+		
+6. ADD -> 기존 내용에 +a로 추가하는 개념.
+	$('선택자').append("값");	: 
+	$('선택자').prepend("값");	:
+	$('선택자').after("값");	: 선택자 다음에 값을 추가
+	$('선택자').before("값");	: 선택자 이전에 값을 추가
+
+
+7. 이벤트 위임
+	$('부모선택자').on('eventName','childSelector',함수)
+
+
+========================================================================
+
+
+웹 통합 환경 확인사항
+
+1. JDK 
+2. DB
+3. WebServer(tomcat)
+4. Eclipse
+
+
+
+
+========================================================================
+
+1. 개발 준비
+
+ 1) Tomcat 웹서버 다운
+
+ 
+ 2) Tomcat 환경변수 설정
+
+    제어판 -> 시스템 및 보안 -> 시스템 -> 고급시스템 설정 -> 고급 -> 환경변수
+    시스템 변수 -> 새로 만들기
+    변수 이름 : CATALINA_HOME
+    변수 값 : D:\apache-tomcat-8.0.53 Tomcat 폴더 위치
+
+    시스템 변수 -> path -> 편집
+    변수 값 : %CATALINA_HOME%\bin;
+
+ 3) Tomcat
+    - tomcat 이 설치된 경로 (CATALINA_HOME) -> conf
+    - server.xml
+      Connector port="80" URIEncoding = "UTF - 8" : 포트 수정 및 추가
+
+ 4) Eclipse
+
+ - perspective -> JAVA EE 변경
+ - window - preference
+    a. general - workspace : UTF-8
+    b. general - web - css : UTF-8
+    c. general - web - html: UTF-8
+    d. general - web - jsp : UTF-8
+
+ 5) Eclipse - Tomcat 연동
+    a) window - preference - server - runtime...
+    b) add -> Tomcat 8.0 -> CATALINA_HOME 경로 선택, 
+
+
+** cheat sheet 
+
+각 언어 (마크업, 백앤드 등)의 표준 사용법(?)을 열람할 수 있는 것.
+
+                       
+========================================================================
+
+
+
+
+
+----------------------------- HTML ----------------------------------------
+
+JAVA
+코드작성 -> 저장(.java) -> 컴파일(class) -> 실행
+
+Front 언어는 컴파일 언어가 아님
+Web Browser
+ - HTML, CSS, JavaScript 해석기
+ - chrome, IE, FireFox, Safari, Opera 등
+
+1. HTML
+ Hyper Text Markup Language
+ <html>
+        <head>
+                title, 외부파일의 참조, metadata 설정 등 브라우저에 표시되지 않음
+        </head>
+        <body>
+                웹브라우저에 출력되는 모든 것들
+        </body>
+ </html>
+
+ 1) 문서형식 지정
+
+2. 기본문법
+ 1) 요소 (Element)
+    시작태그 와 종료 태그 그리고 태그 사이에 위치한 content로 구성
+    ex) <p> Hello </p>
+    HTML은 요소들의 집합임
+    태그는 소문자를 추천
+
+ 2) 태그 (Tag)
+    <tagName></tagName>
+    <tagName>
+
+ 3) 속성 (Attribute)
+    요소에 추가적인 정보를 제공 (이미지, 파일의 경로, 크기 등등)
+    시작태그에 위치하고 이름과 값의 쌍으로 이루어짐
+    ex) <input type="text">
+    하나의 태그에 여러개의 속성을 가질 수 있다.
+
+ 4) Global Attribute
+    대부분 요소에 사용되는 속성
+    ex) id, class, title, lang,,,,,
+
+3. Tag 분류
+        1) 블럭 태그
+            - 넓이가 컨텐츠의 넓이가 아닌 전체 넓이를 차지
+            - 시작태그와 종료 태그가 있는 요소들은 블럭태그
+            ex) <hr>    
+
+        2) Inline 태그
+            - 넓이가 컨텐츠의 넓이와 동일
+            - 단독태그들은 대부분 인라인태그
+            ex) <a></a>, <span></span>
+
+
+4. Tag
+ 
+ 1) Heading 태그
+    - 제목을 표현, 글자크기를 크게하고 볼드체 
+    <h1></h1> : h1 ~ h6 
+    - 제목 이외에는 사용하지 않는 것이 좋음
+      검색엔진은 제목 태그를 중요한 의미로 받아들일 가능성이 큼
+
+ 2) b
+    - bold체를 지정, 
+     
+ 3) strong
+    - b 태그와 동일하게 bold체를 지정. 중요성의 의미를 갖게됨.
+    - 웹표준을 준수하려면 b 보다는 strong 을 추천
+
+ 4) i
+    - italic 체를 지정
+
+ 5) em 
+    - i 태그와 동일하게 italic 체로 표현.
+    - 중요성의 의미를 갖게 됨.
+
+ 6) small
+    - small text 지정
+
+ 7) mark
+    - highlighted text 지정
+
+ 😎 del
+    - deleted text
+
+ 9) ins
+    - inserted text
+
+ 10) sub
+    - subscripted Text
+
+ 11) sup
+    - superscripted Text
+
+ 12) p(paragraphs)
+    - 문단 지정
+
+ 13) br
+    - line brake (개행 태그), 종료 태그가 없음
+
+ 14) q
+    - 짧은 인용문. "" 로 q 요소를 감쌈
+
+ 15)blockquote
+    - 긴 인용문, blockquote 요소를 들여 쓰기함
+
+----- Link
+
+1) a
+    1) href : 이동하고자 하는 파일의 위치(경로)
+              경로(path)란 파일 시스템상의 특정 파일의 위치를 의미.  
+
+    2) 경로
+        a) 절대 경로
+            - root directory 기준
+            - root directory - context name
+            - jsp 기준 : 프로젝트명 context name
+            - Spring
+            ex) /프로젝트명/경로명......
+
+        b) 상대 경로
+            - 현재 위치 기준
+
+            - 현재 위치
+            ./test/t1.html : 현재 위치에서
+              test/t1.html
+
+            - 단계 이동
+            ../: 한 단계 위로 가서
+
+    3) target
+        링크를 클릭 했을때 윈도우를 어떤걸 오픈 할 지 결정
+        a._self    : 클릭했을때 연결 문서를 현재 윈도우에서 오픈 (default)
+        b._blank   : 클릭했을때 연결 문서를 새로운 윈도우에서 오픈
+
+-- Media
+1) img
+웹페이지에서 이미지를 사용하는 경우
+ex)<img src="이미지 경로">
+    a) src : 이미지 경로
+    b) alt : 이미지 파일이 없을 경우 표시되는 문장
+    c) width:이미지의 넓이 (css에서 주로 사용)
+    d) height:이미지의 높이 (css에서 주로 사용)
+
+2) audio
+    HTML5에서 추가
+    a) src        : 음원 파일 경로
+    b) autoplay   : 자동 재생 여부
+    c) loop       : 반복 재생 여부
+    d) control    : 재생도구 표시 여부, 브라우저 마다 존재       
+ 
+3) video
+    HTML5에서 추가
+    a) src        : 동영상 파일 경로
+    b) poster     : 동영상 로딩 중에 표시될 이미지 경로   
+    c) autoplay   : 자동 재생 여부
+    d) loop       : 반복 재생 여부
+    e) control    : 재생도구 표시 여부, 브라우저 마다 존재       
+    f) width      : 너비를 지정  
+    g) height     : 높이를 지정
+
+---- List & Table
+
+1. List
+
+  ---- 주로 메뉴 생성시 사용
+
+    1) 순서가 없는 리스트 (Unordered List)
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+
+    2) 순서가 있는 리스트(Ordered List)
+        <ol>
+            <li></li>
+            <li></li>
+        </ol>
+
+            a) type 속성
+              "1"   : 숫자 (default)
+              "A"   : 대문자 알파벳
+              "a"   : 소문자 알파벳
+              "I"   : 대문자 로마숫자
+              "i"   : 소문자 로마숫자
+
+            b) start = "숫자" : "숫자" 부타 차례대로
+                        리스트의 시작번호를 지정
+            c) reversed 
+                리스트의 순서를 역으로 표현
+
+2. Table
+  표를 만들때 사용
+
+   <table></table> : 표를 감싸는(선언) 태그
+   <tr></tr>       : 표의 행(table row)
+   <td></td>       : 표의 셀(table column, table data)
+
+   ex) 3행 2열 
+    <table>
+        <tr> <td> </td> <td> </td> </tr>
+        <tr> <td> </td> <td> </td> </tr>
+        <tr> <td> </td> <td> </td> </tr>
+
+
+    </table>
+
+-- 속성
+    a) border     : 표의 테두리 두께 지정(css 주로 다룸)
+    b) colspan    : 열 합치기
+    c) rowspan    : 행 합치기
+
+--- 입력양식
+1. form
+    <form> </form>
+    - 사용자가 입력한 데이터를 수집하기위해 사용
+    - input, textarea, button, select, checkbox, radio button, submit button 등의 
+입력 양식 태그를 포함
+
+    - 속성
+    a) action
+      입력데이터가 전송될 URL 지정
+    b) method
+      입력데이터 전달 방식 지정
+      GET/POST  
+
+2. input 속성
+    a) value
+        사용자가 입력한 값을 
+
+    2) name
+        서버로 전송 될때 구ㅕㄹ하는 이름
+
+    3) readonly
+        읽기전용, 입력이 불가, data는 서버로 전송됨
+
+    4)disabled
+        읽기전용, 입력이 불가, data는 서버로 전송되지 않음
+
+    5) placeholder
+        입력내용의 힌트
+
+4.Button 종류
+  1) <input type="button" value = "button1">
+            form 태그 내.외에서는 작동 안함
+  2) <input type="submit" value ="submit">
+            form 태그 내부: submit 이벤트 발생
+            form 태그 외부: 작동 안함
+  3) <input type ="reset" value = "reset">
+            form 태그 내부 : reset 이벤트 발생
+            form 태그 외부 : 작동 안함
+  4) <button>button2</button>
+            form 태그 내부 : submit 이벤트 발생
+            form 태그 외부 : 작동 안함
+
+5. 선택
+  1) input 
+    a) radio : 여러가지 중에 하나를 선택
+        - name 속성의 값을 일치
+        - checked 속성
+
+    b) checkbox : 여러가지 중에 다중 선택
+        - name 속성의 값을 일치
+
+  2) select : 여러가지 중에 하나를 선택
+        - option 태그에 selected 속성
+
+6. 장문 입력
+    <textarea></textarea>
+
+7. 데이터검증
+    required 속성
+    <input type="email:> : 이메일 형식 자동 검증
+
+---- Group
+    - layout 구성시 사용
+    1. div
+        블럭태그
+
+    2. span
+        인라인 태그
+
+    3. 시맨틱 태그
+        <header></header>
+        <footer></footer>
+        <nav></nav>
+        <section></section>
+        <article></article>
+        <aside></aside>
