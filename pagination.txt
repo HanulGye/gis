@@ -1,0 +1,38 @@
+String sql = "SELECT * FROM (select rownum R, N.* from (select no, subject, writer, reg_date, hit from notice where "+kind+" like ? order by no desc) N) WHERE R between ? and ?";
+
+"SELECT * FROM
+
+(select rownum R, N.* from
+rownum과 n의 모든 컬럼을 담은 테이블을 만들겠다.
+
+(select num, subject, writer, reg_date, hit from board where "+kind+" like ? order by num desc) N)
+n 테이블은 기존 board 테이블에서 num~hit까지를 컬럼으로 가지고 있는 테이블이다.
+그 중에서 kind 컬럼의 내용 중 search 값과 일치하는 것만 찾겠다. 
+정렬은 내림차순으로 하고 기준은 num 값이다. 
+
+WHERE R between ? and ?"; 
+만들어낸 가상의 테이블의 모든 로우를 셀렉트하지 않고, rownum이 startRow와 lastRow 사이의 것만 뽑겠다.
+
+
+
+
+
+
+
+
+
+
+db 문법 중 [테이블명.컬럼명] 요렇게 쓰는건 해당 테이블의 해당 컬럼을 나타낸다. 
+위의 예시대로면, n이라는 별칭의 테이블의 모든 컬럼(*)을 select하겠단 얘기.
+
+
+
+
+rownum = 가상의 컬럼으로서, 테이블의 행 번호를 갖고 있음.
+
+startRow = 가상의 컬럼 rownum의 번호 중 현재 페이지에 뿌려줄 게시글의 첫 번호
+lastRow = 가상의 컬럼 rownum의 번호 중 현재 페이지에 뿌려줄 게시글의 마지막 번호
+
+perPage = 한 페이지당 몇개의 게시글(몇개의 row들을)을 뿌려줄거냐를 정한 변수. (예제에선 10)
+
+

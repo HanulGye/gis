@@ -1,0 +1,38 @@
+﻿
+
+fileUpload
+
+1. cos.jar (lib에 저장)
+
+2. form 의 방식 post
+
+3. form 의 enctype="mulitipart/form-data"
+
+4. MultipartRequest의 매개변수 설정 
+
+	1) request : jsp의 내장객체 request
+	2) saveDirectory : 파일을 저장할 디렉토리(서버) (스트링타입으로 주소 쓰면 됨)
+	3) maxPostSize : 파일의 최대용량 (int)
+	4) encoding : 파일명 encoding 형식 지정(eg. utf-8)
+	5) policy : 파일명 중복시, 덮어씌울지, 새로 이름을 붙여줄지.  
+
+	주요 method
+	.getFileSystemName("parameter"); : 서버에 저장된 파일명 반환
+	.getOriginalFileSystemName("parameter"); : 클라이언트가 업로드한 원래의 파일명 반환
+	.getFileNames(); : parameter 이름들 반환
+
+
+
+	** file 내용 저장할 db따로 생성
+	 
+	
+
+	
+	
+	
+	file upload (회원 개인의 프로필 사진)
+
+	QnA 게시판 구현, 접근 시 로그인한 사람만 가능. 
+	(목록 열람까지는 비회원도 가능)
+	
+	
