@@ -1,0 +1,15 @@
+SELECT s.office　営業所, count(e.office) お客様数
+FROM t_employee e
+inner
+join t_siten s
+on e.office = s.o_num
+GROUP BY s.office, e.office
+order by e.office asc;
+
+
+그룹바이의 개념, count()와 같은 함수의 단일행이란 개념,
+그룹바이와 조인의 관계 
+
+즉, 위의 쿼리가 왜 동작하고, 특정부분을 수정(그룹바이의 컬럼명이 바뀌거나, 조인문 수정?)하면 왜 안되는지.
+
+-----------------------------------
